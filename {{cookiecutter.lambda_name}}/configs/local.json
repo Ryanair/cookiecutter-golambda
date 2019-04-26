@@ -1,0 +1,6 @@
+{
+    "{{cookiecutter.lambda_name | title }}Lambda": {
+        "{{cookiecutter.project_abbreviation | upper}}_DYNAMODBENDPOINT": "http://docker.for.mac.localhost:8000",
+        "{{cookiecutter.project_abbreviation | upper}}_TABLENAME": "flights"
+    }
+}

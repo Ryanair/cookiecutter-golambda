@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Parameters:
+  Company:
+    Type: String
+    Default: FR
+  Project:
+    Type: String
+    Default: MRKT
+  Vpc:
+    Type: String
+    Default: SANDBOX
+  Environment:
+    Type: String
+    Default: DEV
+  DynamoDbEndpoint:
+    Type: String
+    Default: https://dynamodb.eu-west-1.amazonaws.com
+
+Resources:
+  {{cookiecutter.lambda_name | title }}Lambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: creation
+      CodeUri: .
+      Runtime: go1.x
+      Timeout: 40
+      Environment:
+        Variables:
+          {{cookiecutter.project_abbreviation | upper}}_DYNAMODBENDPOINT: !Ref DynamoDbEndpoint
+          {{cookiecutter.project_abbreviation | upper}}_TABLENAME: ''
+      Tags:
+        Project: {{cookiecutter.project_name}}
+        Component: {{cookiecutter.lambda_name}}
+        Environment:
+          Ref: Environment
+        ProductOwner: gowinm@ryanair.com
+        TechnicalOwner: czubakm@ryanair.com
+        Version: undef
+      Events:
+        PartnerEvent:
+          Type: Api
+          Properties:
+            Path: /flights
+            Method: POST

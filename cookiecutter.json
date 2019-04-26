@@ -1,0 +1,6 @@
+{
+    "project_name": "golambda",
+    "project_abbreviation": "golambda",
+    "lambda_name": "flight",
+    "use_dynamodb": "y"
+}
