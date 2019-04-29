@@ -9,15 +9,51 @@ cookiecutter-golambda is an AWS Lambda function generator. It creates opinionate
 * Golang 1.12.x and above
 
 # Usage
-```cookiecutter https://github.com/Ryanair/cookiecutter-golambda```
-![cookiecutter-golambda](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda.gif)
+```bash 
+cookiecutter https://github.com/Ryanair/cookiecutter-golambda
+```
 
+![cookiecutter-golambda](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda.gif)  
+
+```bash 
+make
+```
+![cookiecutter-golambda-make](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda-make.gif)
 # Features
 * Run your AWS Lambda function locally and use API Gateway as a trigger. 
 * Use either DynamoDB or in memory storage adapter for your persistence layer.
 * Execute by using pre-defined set of Makefile commands. 
 * Handle environment variables by using [envconfig](https://github.com/kelseyhightower/envconfig)
 * Use Uber's [zap](https://github.com/uber-go/zap) logging library.
+
+# Project structure
+Generated code will be structured as follows:
+
+```bash
+├── build
+├── cmd
+│   ├── creation
+│   │   └── main.go
+│   └── retrieval
+│       └── main.go
+├── configs
+│   └── local.json
+├── deployments
+├── internal
+├── pkg
+├── go.mod
+├── go.sum
+└── Makefile
+```
+
+`/build` local configurations and scripts, such as: start local DynamoDB container, setup DynamoDB table, etc.  
+`/cmd` Lambda functions main.go files. Split logic into multiple functions and avoid creating function monolith.   
+`/configs` configuration file templates for each environment.  
+`/deployments` SAM template with all required AWS resources. Your function and all dependent infrastructure components defined within `template.yml` will be deployed on AWS cloud.  
+`/internal` code that is not related to business logic goes here, e.g. wrapper around Uber's zap logger.  
+`/pkg` business logic implementation that follows Hexagonal Architecture.  
+`go.mod` go module definition and all required 3rd party modules.  
+`Makefile` default configuration for common commands.  
 
 # Built with
 [Cookiecutter](https://github.com/audreyr/cookiecutter)
