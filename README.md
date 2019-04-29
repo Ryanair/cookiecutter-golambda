@@ -46,14 +46,22 @@ Generated code will be structured as follows:
 └── Makefile
 ```
 
-`/build` local configurations and scripts, such as: start local DynamoDB container, setup DynamoDB table, etc.  
-`/cmd` Lambda functions main.go files. Split logic into multiple functions and avoid creating function monolith.   
-`/configs` configuration file templates for each environment.  
-`/deployments` SAM template with all required AWS resources. Your function and all dependent infrastructure components defined within `template.yml` will be deployed on AWS cloud.  
-`/internal` code that is not related to business logic goes here, e.g. wrapper around Uber's zap logger.  
-`/pkg` business logic implementation that follows Hexagonal Architecture.  
-`go.mod` go module definition and all required 3rd party modules.  
-`Makefile` default configuration for common commands.  
+#### `/build` 
+local configurations and scripts, such as: start local DynamoDB container, setup DynamoDB table, etc.  
+#### `/cmd` 
+Lambda functions main.go files. Split logic into multiple functions and avoid creating function monolith.   
+#### `/configs` 
+configuration file templates for each environment.  
+#### `/deployments` 
+SAM template with all required AWS resources. Your function and all dependent infrastructure components defined within `template.yml` will be deployed on AWS cloud.  
+#### `/internal` 
+code that is not related to business logic goes here, e.g. wrapper around Uber's zap logger.  
+#### `/pkg` 
+business logic implementation that follows Hexagonal Architecture.  
+#### `go.mod` 
+go module definition and all required 3rd party modules.  
+#### `Makefile` 
+default configuration for common commands.  
 
 # Built with
 [Cookiecutter](https://github.com/audreyr/cookiecutter)
