@@ -10,7 +10,7 @@ cookiecutter-golambda is an AWS Lambda function generator. It creates opinionate
 
 # Usage
 ```cookiecutter https://github.com/Ryanair/cookiecutter-golambda```
-![cookiecutter-golambda](https://github.com/Ryanair/cookiecutter-golambda/cookiecutter-golambda.gif)
+![cookiecutter-golambda](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda.gif)
 
 # Features
 * Run your AWS Lambda function locally and use API Gateway as a trigger. 
