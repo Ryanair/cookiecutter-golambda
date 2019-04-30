@@ -15,12 +15,15 @@ cookiecutter https://github.com/Ryanair/cookiecutter-golambda
 
 ![cookiecutter-golambda](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda.gif)  
 
+and then go to generated directory and run Lambda function by inovking 
 ```bash 
 make
 ```
+
 ![cookiecutter-golambda-make](https://github.com/Ryanair/cookiecutter-golambda/blob/master/cookiecutter-golambda-make.gif)
 # Features
 * Run your AWS Lambda function locally and use API Gateway as a trigger. 
+
 * Use either DynamoDB or in memory storage adapter for your persistence layer.
 * Execute by using pre-defined set of Makefile commands. 
 * Handle environment variables by using [envconfig](https://github.com/kelseyhightower/envconfig)
