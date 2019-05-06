@@ -5,7 +5,12 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var log *zap.SugaredLogger
+var (
+	log *zap.SugaredLogger
+
+	invalidRequestMessage  = "Invalid request body: %v, due to: %v"
+	invalidResponseMessage = "Invalid response body: %v, due to: %v"
+)
 
 // nolint
 func Initialize() {
@@ -29,8 +34,16 @@ func Initialize() {
 	}
 	l = l.WithOptions(zap.AddCallerSkip(1))
 	log = l.Sugar()
-
 }
+
+func InvalidRequest(value interface{}, err error) {
+	log.Errorf(invalidRequestMessage, value, err)
+}
+
+func InvalidResponse(value interface{}, err error) {
+	log.Errorf(invalidResponseMessage, value, err)
+}
+
 func Info(args ...interface{}) {
 	log.Info(args)
 }
