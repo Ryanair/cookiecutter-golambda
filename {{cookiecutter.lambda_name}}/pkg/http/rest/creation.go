@@ -6,9 +6,10 @@ import (
 	
 	"github.com/Ryanair/goaws/lambda/apigw"
 	validation "github.com/go-ozzo/ozzo-validation"
-	
-	"stash.ryanair.com/{{cookiecutter.project_name}}/{{cookiecutter.lambda_name}}/pkg/{{cookiecutter.lambda_name}}"
+	"github.com/pkg/errors"
+
 	"stash.ryanair.com/{{cookiecutter.project_name}}/{{cookiecutter.lambda_name}}/internal/logger"
+	"stash.ryanair.com/{{cookiecutter.project_name}}/{{cookiecutter.lambda_name}}/pkg/{{cookiecutter.lambda_name}}"
 )
 
 type createFlightRequest struct {
@@ -50,25 +51,26 @@ func NewCreationHandler(service flightCreator) *CreationHandler {
 func (h *CreationHandler) Handle(req *apigw.Request) (*apigw.Response, error) {
 	var out createFlightRequest
 	if err := Unmarshal(req, &out); err != nil {
-		logger.Warnf("cannot unmarshal request=%v", req.Body, err)
-		return ResponseError(apigw.StatusBadRequest, "Invalid request body.")
+		logger.InvalidRequest(req.Body, errors.Wrap(err, "failed to unmarshal request body"))
+		return ResponseInvalidRequest()
 	}
 
 	if err := out.validate(); err != nil {
-		logger.Warnf("invalid request body=%v", out)
-		return ResponseError(apigw.StatusBadRequest, err.Error())
+		logger.InvalidRequest(out, errors.Wrap(err, "failed to validate request body"))
+		return ResponseValidationError(err)
 	}
 
 	id, createErr := createFlight(out, h.service)
 	if createErr != nil {
-		logger.Errorf("cannot create flight, err=%v", createErr)
-		return ResponseError(apigw.StatusInternalServerError, "Internal server error.")
+		logger.Errorf("cannot create flight, err: %v", createErr)
+		return ResponseInternalError()
 	}
 
 	resp := createFlightResponse{ID: id}
 	respBody, marshalErr := Marshal(resp)
 	if marshalErr != nil {
-		return ResponseError(apigw.StatusInternalServerError, "Internal server error.")
+		logger.InvalidResponse(resp, errors.Wrap(marshalErr, "failed to marshal response body"))
+		return ResponseInternalError()
 	}
 
 	return apigw.NewResponse(apigw.StatusCreated, respBody), nil
@@ -78,10 +80,10 @@ func createFlight(req createFlightRequest, service flightCreator) ({{cookiecutte
 	flght := {{cookiecutter.lambda_name}}.NewFlight(req.CarrierCode, req.Number, req.Departure, req.Arrival, req.DepatureDateTime, req.ArrivalDateTime)
 	id, creationErr := service.CreateFlight(&flght)
 	if creationErr != nil {
-		logger.Errorf("cannot create flight, err=%v", creationErr)
+		logger.Errorf("cannot create flight, err: %v", creationErr)
 		return "", creationErr
 	}
-	logger.Infof("flight %v created successfuly", flght)
+	logger.Infof("flight %v created successfully", flght)
 	return id, creationErr
 }
 
